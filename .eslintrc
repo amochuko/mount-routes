@@ -4,8 +4,8 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint"],
-  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "plugins": ["@typescript-eslint", "jest"],
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:jest/recommended"],
 
   "rules": {
     "@typescript-eslint/no-unused-vars": "error",
@@ -15,6 +15,7 @@
 
   "env": {
     "browser": true,
-    "es2021": true
+    "es2021": true,
+    "jest": true
   }
 }

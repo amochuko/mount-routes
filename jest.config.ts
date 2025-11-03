@@ -61,10 +61,10 @@ const config: Config = {
   // forceCoverageMatch: [],
 
   // A path to a module which exports an async function that is triggered once before all test suites
-  globalSetup: "<rootDir>/jest.global-setup.ts",
+  // globalSetup: "<rootDir>/jest.global-setup.ts",
 
   // A path to a module which exports an async function that is triggered once after all test suites
-  globalTeardown: "<rootDir>/jest.teardown.ts",
+  // globalTeardown: "<rootDir>/jest.teardown.ts",
 
   // A set of global variables that need to be available in all test environments
   // globals: {},
@@ -137,7 +137,7 @@ const config: Config = {
   // setupFiles: [],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
-  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
+  // setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
 
   // The number of seconds after which a test is considered as slow and reported as such in the results.
   // slowTestThreshold: 5,
