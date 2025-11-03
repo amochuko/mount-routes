@@ -1,0 +1,10 @@
+/node_modules
+.env
+.env.test
+.DS_Store
+/report
+/http
+/.vscode
+*.generated.*
+coverage/
+/dist

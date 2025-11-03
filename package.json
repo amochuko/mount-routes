@@ -1,0 +1,56 @@
+{
+  "name": "route-mounter",
+  "version": "1.0.0",
+  "description": "Utility that mounts routers in an Express.js app",
+  "main": "dist/main.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./mounter": {
+      "import": "./dist/routes/mounter.js",
+      "require": "./dist/routes/mounter.cjs"
+    }
+  },
+  "private": false,
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "clean": "rm -rf ./dist",
+    "build": "npm run clean && tsc --build",
+    "prebuild": "tsc --build tsconfig.prod.json || true",
+    "start": "npm run build && node dist/main.js",
+    "dev": "NODE_ENV=development nodemon --watch 'src' --ext ts --exec 'ts-node' src/main.ts",
+    "test": "jest",
+    "test:coverage": "jest --forceExit --coverage --verbose",
+    "profiler": "NODE_ENV=production node --prof dist/main.js",
+    "lint": "npx eslint .",
+    "prepublishOnly": "npm run build"
+  },
+  "author": "Ochuko <7204868+amochuko@users.noreply.github.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^5.1.0",
+    "reflect-metadata": "^0.2.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.5",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.10.7",
+    "@types/supertest": "^6.0.3",
+    "@typescript-eslint/parser": "^8.46.2",
+    "eslint": "^9.19.0",
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.9",
+    "supertest": "^7.1.4",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.23.0"
+  }
+}
