@@ -2,7 +2,7 @@
   "name": "route-mounter",
   "version": "1.0.0",
   "description": "Utility that mounts routers in an Express.js app",
-  "main": "dist/main.js",
+  "main": "dist/server.js",
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
@@ -24,11 +24,11 @@
     "clean": "rm -rf ./dist",
     "build": "npm run clean && tsc --build",
     "prebuild": "tsc --build tsconfig.prod.json || true",
-    "start": "npm run build && node dist/main.js",
-    "dev": "NODE_ENV=development nodemon --watch 'src' --ext ts --exec 'ts-node' src/main.ts",
+    "start": "npm run build && node dist/server.js",
+    "dev": "NODE_ENV=development nodemon --watch 'src' --ext ts --exec 'ts-node' src/server.ts",
     "test": "jest",
     "test:coverage": "jest --forceExit --coverage --verbose",
-    "profiler": "NODE_ENV=production node --prof dist/main.js",
+    "profiler": "NODE_ENV=production node --prof dist/server.js",
     "lint": "npx eslint .",
     "prepublishOnly": "npm run build"
   },
