@@ -1,7 +1,7 @@
 import express from "express";
-import { mountRouters } from "../../routes/mounter";
-
+import path from "node:path";
 import request from "supertest";
+import { mountRouters } from "../../mounter";
 
 describe("mountRouters", () => {
   let app: express.Application;
@@ -11,7 +11,7 @@ describe("mountRouters", () => {
   });
 
   test("mounts home router at /", async () => {
-    const mounted = mountRouters(app);
+    const mounted = mountRouters(app, path.resolve("src", "routes"));
 
     // at least 1 route is mounted
     expect(mounted).toBeGreaterThanOrEqual(1);
