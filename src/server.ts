@@ -1,9 +1,13 @@
+import express from "express";
 import http from "node:http";
 import { debug } from "node:util";
-import "reflect-metadata";
-import app from "./app";
+import { mountRouters } from "./mounter";
+import path from 'node:path';
 
+const app = express();
 const PORT = process.env.PORT || 4000;
+
+mountRouters(app, path.join(__dirname, 'routes'));
 
 const server = http.createServer(app);
 
