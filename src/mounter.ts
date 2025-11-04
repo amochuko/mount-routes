@@ -3,7 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 /**
- * Mounts routers found under the folder containing this file.
+ * Mounts routers found under the folder path passed as arguement.
  * This looks for directories under routes/ and mounts the first .ts/.js file inside each directory (an index file or *Router file). It supports default export, named router, or the module object itself (common patterns).
  *
  * Expected structure:
