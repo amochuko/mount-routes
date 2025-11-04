@@ -8,6 +8,7 @@
   "exports": {
     ".": {
       "import": "./dist/mounter.js",
+      "require": "./dist/mounter.js",
       "types": "./dist/mounter.d.ts"
     }
   },
