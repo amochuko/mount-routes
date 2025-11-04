@@ -25,9 +25,15 @@
     "declaration": true,
     "emitDeclarationOnly": false,
     "declarationMap": true,
-    
+
     "sourceMap": true
   },
   "include": ["src"], // which files to compile
-  "exclude": ["node_modules", "dist", "__tests__"] // which files to skip
+  "exclude": [
+    "node_modules",
+    "dist/**/*",
+    "src/__tests__/**/*",
+    "src/dev-routes/**/*",
+    "src/server.ts"
+  ] // which files to skip
 }
