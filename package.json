@@ -2,13 +2,13 @@
   "name": "@numquid/route-mounter",
   "version": "1.0.0",
   "description": "Utility that mounts routers in an Express.js app",
-  "main": "dist/routes/mounter.js",
-  "types": "dist/routes/mounter.d.ts",
+  "main": "dist/mounter.js",
+  "module": "dist/mounter.js",
+  "types": "dist/mounter.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/routes/mounter.js",
-      "require": "./dist/routes/mounter.cjs",
-      "types": "./dist/routes/mounter.d.ts"
+      "import": "./dist/mounter.js",
+      "types": "./dist/mounter.d.ts"
     }
   },
   "private": false,
@@ -20,7 +20,6 @@
   "scripts": {
     "clean": "rm -rf ./dist",
     "build": "npm run clean && tsc --build",
-    "prebuild": "tsc --build tsconfig.prod.json || true",
     "prepare": "npm run build",
     "start": "npm run build && node dist/server.js",
     "dev": "NODE_ENV=development nodemon --watch 'src' --ext ts --exec 'ts-node' src/server.ts",
