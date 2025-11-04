@@ -15,8 +15,8 @@ import path from "node:path";
  */
 
 export function mountRouters(app: Application, routesDir: string) {
-  const baseDir = routesDir;
-
+  const baseDir = routesDir; // path to directory containing the routes
+ 
   const items = fs.readdirSync(baseDir, { withFileTypes: true });
   let mountedCount = 0;
 
