@@ -1,9 +1,15 @@
 import { Application, Router } from "express";
 import fs from "node:fs";
 import path from "node:path";
+import * as utils from "./utils/toKebabCase";
+
+export interface MountRouterOptions {
+  /** Base URL path to mount all routers under, e.g. '/api' */
+  basePath?: string;
+}
 
 /**
- * Mounts routers found under the folder path passed as arguement.
+ * Automatically mounts all routers in a given directory.
  * This looks for directories under routes/ and mounts the first .ts/.js file inside each directory (an index file or *Router file). It supports default export, named router, or the module object itself (common patterns).
  *
  * Expected structure:
@@ -12,88 +18,94 @@ import path from "node:path";
  *     homeRouter.ts   (or index.ts exporting router)
  *   users/
  *     usersRouter.ts
+ *   AboutUs/
+ *     index.ts
+ *
+ * @param app - Express application instance.
+ * @param routesDir - Absolute path to the directory containing route folders.
+ * @param options - Optional basePath for mounting (defaults to '/api').
  */
+export function mountRouters(
+  app: Application,
+  routesDir: string,
+  options: MountRouterOptions = {}
+) {
+  const { basePath = "/api" } = options;
 
-export function mountRouters(app: Application, routesDir: string) {
-  const baseDir = routesDir; // path to directory containing the routes
- 
-  const items = fs.readdirSync(baseDir, { withFileTypes: true });
-  let mountedCount = 0;
+  if (!fs.existsSync(routesDir)) {
+    throw new Error(`Routes directory not found: ${routesDir}`);
+  }
 
-  for (const item of items) {
-    if (!item.isDirectory()) continue;
+  const folders = fs.readdirSync(routesDir);
+  let routeCounter = 0;
 
-    const folderName = item.name;
-    const folderPath = path.join(baseDir, folderName);
+  for (const folder of folders) {
+    const folderPath = path.join(routesDir, folder);
+    const stat = fs.statSync(folderPath);
 
-    // Look for router files inside the directory (index, *Router)
+    if (!stat.isDirectory()) continue;
+
     const subFiles = fs.readdirSync(folderPath);
 
     for (const subFile of subFiles) {
-      // ignore hidden files
-      if (subFile.startsWith(".")) continue;
+      const subFilePath = path.join(folderPath, subFile);
 
       const ext = path.extname(subFile).toLowerCase();
       if (![".js", ".ts"].includes(ext)) continue;
 
-      const subFilePath = path.join(folderPath, subFile);
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      let routeModule: any;
-
-      try {
+      if (fs.statSync(subFilePath).isFile()) {
         // eslint-disable-next-line @typescript-eslint/no-require-imports
-        routeModule = require(subFilePath);
-      } catch (err) {
-        console.warn(`Failed to require route file ${subFilePath}: `, err);
-        continue;
+        const routeModule = require(subFilePath);
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const routerCandidate: any =
+          routeModule.default || routeModule.router || routeModule;
+
+        const isRouter =
+          typeof routerCandidate == "function" ||
+          (routerCandidate && typeof routerCandidate.use === "function");
+
+        if (!isRouter) {
+          console.warn(
+            `\nSkipping ${folderPath}: not an express router export\n`
+          );
+          continue;
+        }
+
+        const router = routerCandidate as Router;
+
+        // prefer filename without extension, or index -> folderName
+        let routePathCandidate = path.parse(subFile).name; // e.g., homeRouter or index
+
+        if (routePathCandidate.toLowerCase() === "index") {
+          routePathCandidate = folder;
+        }
+
+        // remove trailing 'Router' in a case-insensitive way
+        if (routePathCandidate.endsWith("Router")) {
+          routePathCandidate = routePathCandidate.replace(/router$/i, "");
+        }
+
+        const routeName = utils.toKebabCase(routePathCandidate);
+
+        if (routeName === "home" || routeName === "") {
+          // mount at root
+          app.use(basePath, router);
+          console.info(`\nMounted router at / from ${folderPath}/${subFile}\n`);
+        } else {
+          app.use(`${basePath}/${routeName}`, router);
+          console.info(
+            `\nMounted router at /${routeName} from ${folderPath}/${subFile}\n`
+          );
+        }
+
+        routeCounter++;
+        break;
       }
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const routerCandidate: any =
-        routeModule.default || routeModule.router || routeModule;
-
-      const isRouter =
-        typeof routerCandidate == "function" ||
-        (routerCandidate && typeof routerCandidate.use === "function");
-
-      if (!isRouter) {
-        console.warn(`Skipping ${folderPath}: not an express router export`);
-      }
-
-      const router = routerCandidate as Router;
-
-      // prefer filename without extension, or index -> folderName
-      let routePathCandidate = path.parse(subFile).name; // e.g., homeRouter or index
-      if (routePathCandidate.toLowerCase() === "index") {
-        routePathCandidate = folderName;
-      }
-
-      // remove trailing 'Router' in a case-insensitive way
-      routePathCandidate = routePathCandidate.replace(/router$/i, "");
-
-      // convert camelCase/PascalCase to kebab-case
-      const routeName = routePathCandidate
-        .replace(/([a-z0-9])(A-Z)/g, "$1-$2")
-        .replace(/[_\s]+/g, "-")
-        .toLowerCase();
-
-      if (routeName === "home" || routeName === "") {
-        // mount at root
-        app.use(`/api`, router);
-        console.info(`\nMounted router at / from ${folderName}/${subFile}`);
-      } else {
-        app.use(`/api/${routeName}`, router);
-        console.info(
-          `Mounted router at /${routeName} from ${folderName}/${subFile}`
-        );
-      }
-
-      mountedCount++;
-      break;
     }
   }
 
-  console.log(`A total of ${mountedCount} was mounted.\n`);
-  return mountedCount;
+  console.log(
+    `🚀 ${routeCounter} route(s) mounted under basePath '${basePath}'`
+  );
 }
