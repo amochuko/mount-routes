@@ -23,6 +23,9 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
 
     "declaration": true,
+    "emitDeclarationOnly": false,
+    "declarationMap": true,
+    
     "sourceMap": true
   },
   "include": ["src"], // which files to compile
