@@ -31,6 +31,10 @@
   },
   "author": "Ochuko <7204868+amochuko@users.noreply.github.com>",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/amochuko/mount-routes/issues"
+  },
+  "keywords": ["route", "routers", "mounting", "experss mounter", "express.js", "nodejs"],
   "dependencies": {
     "express": "^5.1.0",
     "reflect-metadata": "^0.2.2"
