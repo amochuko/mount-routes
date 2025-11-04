@@ -14,8 +14,8 @@ import path from "node:path";
  *     usersRouter.ts
  */
 
-export function mountRouters(app: Application) {
-  const baseDir = __dirname; // folder containing this file (src/routes or dist/routes after build)
+export function mountRouters(app: Application, routesDir: string) {
+  const baseDir = routesDir;
 
   const items = fs.readdirSync(baseDir, { withFileTypes: true });
   let mountedCount = 0;
