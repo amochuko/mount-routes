@@ -5,7 +5,7 @@ Utility to automatically mount Express routers from `src/routes/*`.
 ## Installation
 
 ```bash
-npm install route-mounter
+npm i @numquid/route-mounter
 ```
 
 ### Usage
