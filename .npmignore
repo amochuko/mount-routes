@@ -3,3 +3,9 @@ tests/
 .vscode/
 .eslintrc.*
 tsconfig*.json
+**/*.spec.ts
+node_modules
+dist/**/*
+src/__tests__/**/*
+src/dev-routes/**/*
+src/server.ts
