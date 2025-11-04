@@ -34,10 +34,16 @@
   "bugs": {
     "url": "https://github.com/amochuko/mount-routes/issues"
   },
-  "keywords": ["route", "routers", "mounting", "experss mounter", "express.js", "nodejs"],
+  "keywords": [
+    "route",
+    "routers",
+    "mounting",
+    "experss mounter",
+    "express.js",
+    "nodejs"
+  ],
   "dependencies": {
-    "express": "^5.1.0",
-    "reflect-metadata": "^0.2.2"
+    "express": "^5.1.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.5",
