@@ -1,13 +1,14 @@
 import express from "express";
 import http from "node:http";
+import path from "node:path";
 import { debug } from "node:util";
 import { mountRouters } from "./mounter";
-import path from 'node:path';
 
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-mountRouters(app, path.join(__dirname, 'routes'));
+const basePath = "/my-shop";
+mountRouters(app, path.join(__dirname, "dev-routes"), { basePath });
 
 const server = http.createServer(app);
 
