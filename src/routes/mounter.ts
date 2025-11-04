@@ -29,8 +29,6 @@ export function mountRouters(app: Application) {
     // Look for router files inside the directory (index, *Router)
     const subFiles = fs.readdirSync(folderPath);
 
-    console.log({ folderName, folderPath, subFiles });
-
     for (const subFile of subFiles) {
       // ignore hidden files
       if (subFile.startsWith(".")) continue;
@@ -83,7 +81,7 @@ export function mountRouters(app: Application) {
       if (routeName === "home" || routeName === "") {
         // mount at root
         app.use(`/api`, router);
-        console.info(`Mounted router at / from ${folderName}/${subFile}`);
+        console.info(`\nMounted router at / from ${folderName}/${subFile}`);
       } else {
         app.use(`/api/${routeName}`, router);
         console.info(
@@ -96,6 +94,6 @@ export function mountRouters(app: Application) {
     }
   }
 
-  console.log(`A total of ${mountedCount} was mounted`);
+  console.log(`A total of ${mountedCount} was mounted.\n`);
   return mountedCount;
 }
