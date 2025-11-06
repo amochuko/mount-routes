@@ -1,6 +1,6 @@
 {
   "name": "@numquid/route-mounter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Utility that mounts routers in an Express.js app",
   "main": "dist/mounter.js",
   "module": "dist/mounter.js",
