@@ -77,12 +77,19 @@ export function mountRouters(
         // prefer filename without extension, or index -> folderName
         let routePathCandidate = path.parse(subFile).name; // e.g., homeRouter or index
 
-        if (routePathCandidate.toLowerCase() === "index") {
+        if (
+          routePathCandidate.toLowerCase() === "index" ||
+          routePathCandidate.toLowerCase() === "routers" ||
+          routePathCandidate.toLowerCase() === "routes"
+        ) {
           routePathCandidate = folder;
         }
 
         // remove trailing 'Router' in a case-insensitive way
-        if (routePathCandidate.endsWith("Router")) {
+        if (
+          routePathCandidate.endsWith("Router") ||
+          routePathCandidate.endsWith("Routers")
+        ) {
           routePathCandidate = routePathCandidate.replace(/router$/i, "");
         }
 
@@ -91,11 +98,11 @@ export function mountRouters(
         if (routeName === "home" || routeName === "") {
           // mount at root
           app.use(basePath, router);
-          console.info(`\nMounted router at / from ${folderPath}/${subFile}\n`);
+          console.info(`[mount-router]: Mounted routes at / from /${folder}/${subFile}`);
         } else {
           app.use(`${basePath}/${routeName}`, router);
           console.info(
-            `\nMounted router at /${routeName} from ${folderPath}/${subFile}\n`
+            `[mount-router]: Mounted routes at /${routeName} from /${folder}/${subFile}`
           );
         }
 
